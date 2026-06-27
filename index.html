@@ -134,6 +134,14 @@
     @media screen and (max-width:520px){
       .pages{padding:24px 12px 110px;}
       .card{transform:scale(.44);margin-bottom:calc(-11in * .56);}
+      /* Keep the two floating controls from overlapping on a phone: drop the
+         "Date" label, tighten the toggle, and shrink Download to an icon. */
+      .date-toggle{left:12px;bottom:16px;padding:3px;font-size:13px;}
+      .date-toggle .label{display:none;}
+      .date-toggle button{padding:8px 12px;}
+      .download-btn{right:12px;bottom:16px;padding:13px;}
+      .download-btn .dl-label{display:none;}
+      .download-btn svg{width:18px;height:18px;}
     }
   </style>
 </head>
@@ -152,7 +160,7 @@
       <polyline points="7 10 12 15 17 10"></polyline>
       <line x1="12" y1="15" x2="12" y2="3"></line>
     </svg>
-    Download PDF
+    <span class="dl-label">Download PDF</span>
   </a>
 
   <script>
