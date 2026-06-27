@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nova Robin — A Birth Announcement</title>
+  <meta name="description" content="An organic, floral birth announcement for Nova Robin, in three languages." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --stone-900:#1c1917;
+      --stone-800:#292524;
+      --stone-600:#57534e;
+      --stone-500:#78716c;
+      --stone-100:#f5f5f4;
+      --page-bg:#f4f2ef;
+      --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    }
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      background:var(--page-bg);
+      font-family:"Cormorant Garamond",Georgia,serif;
+      color:var(--stone-600);
+      -webkit-font-smoothing:antialiased;
+    }
+    .pages{
+      display:flex;flex-direction:column;align-items:center;
+      gap:48px;padding:56px 16px 140px;
+    }
+
+    /* ---- Card (US Letter, 8.5in x 11in @96dpi) ---- */
+    .card{
+      position:relative;width:8.5in;height:11in;
+      background:#fff;border-radius:3px;overflow:hidden;flex:0 0 auto;
+      box-shadow:0 25px 50px -12px rgba(28,25,23,.28);
+    }
+
+    /* ---- Decorative florals ---- */
+    .floral{position:absolute;pointer-events:none;mix-blend-mode:multiply;opacity:.85;z-index:0;}
+    .floral img{width:100%;height:100%;object-fit:cover;display:block;}
+    .floral.s0{top:-120px;left:-50px;width:500px;height:500px;transform:rotate(105deg);}
+    .floral.s1{top:-130px;right:-40px;width:500px;height:500px;transform:rotate(-115deg);}
+    .floral.s2{bottom:-200px;left:-200px;width:400px;height:400px;transform:rotate(45deg);}
+    .floral.s3{bottom:-200px;right:-200px;width:400px;height:400px;transform:rotate(-25deg);}
+    .floral.m60 img{-webkit-mask-image:radial-gradient(closest-side,#000 60%,transparent 95%);mask-image:radial-gradient(closest-side,#000 60%,transparent 95%);}
+    .floral.m40 img{-webkit-mask-image:radial-gradient(closest-side,#000 40%,transparent 95%);mask-image:radial-gradient(closest-side,#000 40%,transparent 95%);}
+
+    .top-glow{
+      position:absolute;top:0;left:0;right:0;height:380px;z-index:5;pointer-events:none;
+      background:radial-gradient(ellipse 75% 60% at 50% 40%,rgba(255,255,255,.92) 20%,rgba(255,255,255,0) 80%);
+    }
+
+    /* ---- Content ---- */
+    .content{
+      position:relative;z-index:20;display:flex;flex-direction:column;height:100%;
+      padding:40px 60px 60px;justify-content:space-between;
+    }
+    .header{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;padding-top:16px;}
+    .header-glow{position:absolute;inset:-10px 40px;background:rgba(255,255,255,.7);
+      box-shadow:0 0 25px 20px rgba(255,255,255,.7);border-radius:50%;z-index:-1;}
+    .intro{font-size:16px;font-style:italic;color:var(--stone-600);max-width:430px;margin:0 auto;line-height:1.5;}
+    .name{font-family:"Great Vibes",cursive;font-weight:400;font-size:100px;line-height:1.05;
+      color:var(--stone-800);margin:6px 0 0;}
+
+    .body{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;}
+    .body p{font-size:13.5px;line-height:1.6;text-align:justify;color:var(--stone-600);margin:0 0 .72em;}
+    .body p:last-child{margin-bottom:0;}
+    .dateline{font-weight:600;color:var(--stone-900);letter-spacing:.04em;text-transform:uppercase;font-size:13px;}
+
+    /* ---- Controls ---- */
+    .date-toggle{
+      position:fixed;bottom:32px;left:32px;z-index:50;
+      display:flex;align-items:center;gap:4px;
+      background:rgba(255,255,255,.9);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      border-radius:9999px;box-shadow:0 20px 25px -5px rgba(28,25,23,.18);padding:4px;
+      font-family:var(--sans);font-size:14px;
+    }
+    .date-toggle .label{padding:0 12px;color:var(--stone-500);}
+    .date-toggle button{
+      border:0;cursor:pointer;background:transparent;color:var(--stone-600);
+      padding:8px 16px;border-radius:9999px;font:inherit;transition:background-color .15s,color .15s;
+    }
+    .date-toggle button:hover{background:var(--stone-100);}
+    .date-toggle button.active{background:var(--stone-800);color:#fff;}
+    .date-toggle button.active:hover{background:var(--stone-800);}
+
+    .download-btn{
+      position:fixed;bottom:32px;right:32px;z-index:50;
+      display:flex;align-items:center;gap:8px;cursor:pointer;border:0;
+      background:var(--stone-800);color:#fff;
+      padding:12px 20px;border-radius:9999px;font-family:var(--sans);font-size:14px;
+      box-shadow:0 20px 25px -5px rgba(28,25,23,.25);transition:background-color .15s;
+    }
+    .download-btn:hover{background:var(--stone-900);}
+    .download-btn svg{width:16px;height:16px;}
+
+    /* ---- Print ---- */
+    @page{size:Letter;margin:0;}
+    @media print{
+      body{background:#fff;}
+      .pages{padding:0;gap:0;}
+      .date-toggle,.download-btn{display:none !important;}
+      .card{box-shadow:none;border-radius:0;break-after:page;page-break-after:always;}
+      .card:last-child{break-after:auto;page-break-after:auto;}
+      .floral{mix-blend-mode:normal;}
+    }
+
+    @media (max-width:880px){
+      .card{transform:scale(.62);transform-origin:top center;margin-bottom:-420px;}
+    }
+  </style>
+</head>
+<body>
+  <main class="pages" id="pages"></main>
+
+  <div class="date-toggle" id="dateToggle">
+    <span class="label">Date</span>
+    <button data-day="27">June 27</button>
+    <button data-day="28">June 28</button>
+  </div>
+
+  <button class="download-btn" id="downloadBtn" title="Print or save as PDF">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+      <polyline points="7 10 12 15 17 10"></polyline>
+      <line x1="12" y1="15" x2="12" y2="3"></line>
+    </svg>
+    Download 3 Images
+  </button>
+
+  <script>
+    const DATA = [
+  {
+    "code": "en",
+    "intro": "With all our love, joy, and excitement, we would like to introduce you to",
+    "images": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "dateline": "On June {d}, 2026,",
+    "firstRest": "we finally had the joy of meeting the little girl we had spent so many months imagining, talking to, and waiting for.",
+    "paras": [
+      "Long before she was born, we spent a great deal of time thinking about her name and what we hoped it would convey. We wanted to choose a name that reflected both where she comes from and the qualities we hope will guide her through life. As we waited to meet her, we spent months imagining who she might become, talking to her, feeling her grow, and preparing for the day we would finally hold her in our arms. Though we are only beginning to get to know her, we already know that she has changed our lives in ways we never expected.",
+      "Nova comes from the Latin word for \"new,\" and in astronomy a nova is a star that suddenly becomes dramatically brighter. We were drawn to the name in part because her father is an astrophysicist, and astronomy has shaped so much of our life together. We loved that the name has a connection to the stars while also carrying a sense of wonder, discovery, and possibility. We also love that a nova is a powerful and transformative event—a sudden release of energy and light that changes the sky around it. To us, the name feels strong, bright, and full of life. The name also felt fitting because her arrival marks the beginning of an entirely new chapter in our lives. Just as a nova transforms the sky around it, she has already transformed our world simply by becoming part of it. We hope she grows up recognizing her own strength, trusting her voice, and understanding the positive impact she can have on the world around her.",
+      "Her middle name, Robin, reflects our love of the natural world and the joy we find in it. Robins are familiar songbirds whose presence often marks the changing of seasons and the return of spring. They are bright, resilient, and adaptable, bringing music and life wherever they are found.",
+      "We especially love that robins sing throughout the year, bringing music and life to every season. To us, that represents the ability to find beauty and joy in every season of life, not only during the easiest or happiest times. Robins are also remarkably clever birds, known for their resourcefulness and intelligence.",
+      "Robins are often among the first signs that spring is returning. Their arrival signals renewal, growth, and new life. We love the connection between Robin and Nova, because both names speak in different ways about beginnings and the promise of something new.",
+      "Together, Nova Robin brings together the wonder of the night sky and the beauty of the living world. Her name reflects both exploration and connection, strength and joy, curiosity and resilience.",
+      "Above all, we hope she grows up knowing that she is loved exactly as she is. Whatever path she chooses, wherever life takes her, we hope she carries with her a sense of wonder, confidence in her own strength, and the knowledge that she will always have a place in our hearts."
+    ]
+  },
+  {
+    "code": "nl",
+    "intro": "Met alle liefde, vreugde en verwachting in ons hart willen wij jullie graag voorstellen aan",
+    "images": [
+      5,
+      6,
+      7,
+      8
+    ],
+    "dateline": "Op {d} juni 2026",
+    "firstRest": "mochten we eindelijk kennismaken met het kleine meisje waar we al zo veel maanden naar hadden uitgekeken, tegen hadden gepraat en over hadden gedroomd.",
+    "paras": [
+      "Al lang voordat zij geboren werd, hebben we veel nagedacht over haar naam en over wat we haar daarmee wilden meegeven. We wilden een naam kiezen die zowel weerspiegelt waar zij vandaan komt als de eigenschappen die wij hopen dat haar door het leven zullen begeleiden. Terwijl we op haar komst wachtten, stelden we ons vaak voor wie zij zou kunnen worden, praatten we tegen haar, voelden we haar groeien en bereidden we ons voor op de dag dat we haar eindelijk in onze armen zouden kunnen houden. Hoewel we haar nog maar net leren kennen, weten we nu al dat zij ons leven heeft veranderd op manieren die we nooit hadden kunnen verwachten.",
+      "Nova komt van het Latijnse woord voor \"nieuw\". In de sterrenkunde is een nova een ster die plotseling veel helderder wordt. We voelden ons aangetrokken tot deze naam omdat haar vader astrofysicus is en sterrenkunde een belangrijke rol speelt in ons leven samen. We vinden het mooi dat de naam een verbinding met de sterren heeft en tegelijkertijd een gevoel van verwondering, ontdekking en nieuwe mogelijkheden uitstraalt.",
+      "Wat we ook mooi vinden, is dat een nova een krachtig en transformerend verschijnsel is: een plotselinge uitbarsting van energie en licht die de hemel eromheen verandert. Voor ons voelt de naam sterk, stralend en vol leven. De naam voelde ook passend omdat haar komst het begin markeert van een volledig nieuw hoofdstuk in ons leven. Net zoals een nova de hemel om zich heen verandert, heeft zij onze wereld al veranderd door simpelweg deel van ons leven te worden. We hopen dat zij opgroeit met het besef van haar eigen kracht, dat ze vertrouwt op haar stem en begrijpt hoeveel positieve invloed zij op de wereld om haar heen kan hebben.",
+      "Haar tweede naam, Robin, weerspiegelt onze liefde voor de natuur en de vreugde die we daarin vinden. De naam verwijst naar het roodborstje, een bekende zangvogel die vaak wordt gezien als aankondiger van een nieuw seizoen en de terugkeer van de lente. Ze zijn levendig, veerkrachtig en passen zich gemakkelijk aan hun omgeving aan. Overal waar ze zijn, brengen ze muziek en leven met zich mee.",
+      "Wat we vooral mooi vinden, is dat roodborstjes het hele jaar door zingen en zo elk seizoen vullen met muziek en leven. Voor ons symboliseert dat het vermogen om schoonheid en vreugde te vinden in elke fase van het leven, niet alleen in de gemakkelijkste of gelukkigste momenten. Daarnaast staan roodborstjes bekend als slimme en vindingrijke vogels.",
+      "Roodborstjes behoren vaak tot de eerste tekenen dat de lente eraan komt. Hun verschijning staat voor vernieuwing, groei en nieuw leven. We houden van de verbinding tussen Robin en Nova, omdat beide namen op hun eigen manier spreken over een nieuw begin en de belofte van iets nieuws.",
+      "Samen brengen Nova Robin de verwondering van de sterrenhemel en de schoonheid van de natuurlijke wereld samen. Haar naam weerspiegelt zowel ontdekkingsdrang als verbondenheid, kracht en vreugde, nieuwsgierigheid en veerkracht.",
+      "Boven alles hopen we dat zij opgroeit met de wetenschap dat zij geliefd is precies zoals zij is. Welke weg zij ook kiest en waar het leven haar ook brengt, we hopen dat zij haar gevoel van verwondering behoudt, vertrouwen ontwikkelt in haar eigen kracht en altijd weet dat zij een vaste plek heeft in ons hart."
+    ]
+  },
+  {
+    "code": "de",
+    "intro": "Mit all unserer Liebe, Freude und Vorfreude möchten wir euch vorstellen:",
+    "images": [
+      9,
+      10,
+      1,
+      3
+    ],
+    "dateline": "Am {d}. Juni 2026",
+    "firstRest": "durften wir endlich das kleine Mädchen kennenlernen, das wir uns so viele Monate lang vorgestellt haben, mit dem wir gesprochen haben und auf das wir voller Sehnsucht gewartet haben.",
+    "paras": [
+      "Lange bevor sie geboren wurde, haben wir uns viele Gedanken über ihren Namen gemacht und darüber, was wir ihr damit mit auf den Weg geben möchten. Wir wollten einen Namen wählen, der sowohl widerspiegelt, woher sie kommt, als auch die Eigenschaften, die sie hoffentlich durch ihr Leben begleiten werden. Während wir auf ihre Ankunft warteten, haben wir uns oft vorgestellt, wer sie einmal sein könnte, haben mit ihr gesprochen, gespürt, wie sie wächst, und uns auf den Tag vorbereitet, an dem wir sie endlich in unseren Armen halten würden. Obwohl wir sie gerade erst kennenlernen, wissen wir schon jetzt, dass sie unser Leben auf eine Weise verändert hat, die wir nie erwartet hätten.",
+      "Nova stammt vom lateinischen Wort für „neu“. In der Astronomie bezeichnet eine Nova einen Stern, der plötzlich sehr viel heller wird. Wir haben uns unter anderem für diesen Namen entschieden, weil ihr Vater Astrophysiker ist und die Astronomie ein wichtiger Teil unseres gemeinsamen Lebens ist. Uns gefällt, dass der Name eine Verbindung zu den Sternen hat und zugleich Neugier, Entdeckung und neue Möglichkeiten verkörpert.",
+      "Wir lieben auch, dass eine Nova ein kraftvolles und veränderndes Ereignis ist – eine plötzliche Freisetzung von Energie und Licht, die den Himmel um sie herum verändert. Für uns fühlt sich dieser Name stark, strahlend und voller Leben an. Der Name erschien uns auch deshalb passend, weil ihre Ankunft den Beginn eines völlig neuen Kapitels in unserem Leben markiert. So wie eine Nova den Himmel um sich herum verändert, hat sie allein durch ihre Existenz bereits unsere Welt verändert. Wir hoffen, dass sie ihre eigene Stärke erkennt, ihrer Stimme vertraut und versteht, welchen positiven Einfluss sie auf die Welt um sich herum haben kann.",
+      "Ihr zweiter Vorname, Robin (Englisch für Rotkehlchen), spiegelt unsere Liebe zur Natur und die Freude wider, die wir in ihr finden. Rotkehlchen sind vertraute Singvögel, deren Erscheinen oft den Wechsel der Jahreszeiten und die Rückkehr des Frühlings ankündigt. Sie sind lebendig, widerstandsfähig und anpassungsfähig und bringen überall Musik und Leben mit sich.",
+      "Besonders schön finden wir, dass Rotkehlchen das ganze Jahr über singen und so jeder Jahreszeit Musik und Leben schenken. Für uns steht das für die Fähigkeit, in jeder Phase des Lebens Schönheit und Freude zu finden – nicht nur in den einfachsten oder glücklichsten Momenten. Außerdem gelten Rotkehlchen als kluge und einfallsreiche Vögel.",
+      "Rotkehlchen gehören oft zu den ersten Zeichen des Frühlings. Ihr Erscheinen steht für Erneuerung, Wachstum und neues Leben. Wir lieben die Verbindung zwischen Robin und Nova, denn beide Namen erzählen auf ihre eigene Weise von Neuanfängen und dem Versprechen von etwas Neuem.",
+      "Gemeinsam verbinden Nova Robin das Staunen über den Sternenhimmel mit der Schönheit der natürlichen Welt. Ihr Name steht für Entdeckergeist und Verbundenheit, für Stärke und Freude, für Neugier und Widerstandskraft.",
+      "Vor allem aber hoffen wir, dass sie immer weiß, dass sie genauso geliebt wird, wie sie ist. Welchen Weg sie auch einschlagen wird und wohin das Leben sie auch führen mag – wir hoffen, dass sie sich ihr Staunen über die Welt bewahrt, Vertrauen in ihre eigene Stärke entwickelt und immer weiß, dass sie einen festen Platz in unseren Herzen haben wird."
+    ]
+  }
+];
+    const NAME = "Nova Robin";
+    let day = 27;
+
+    function escapeHtml(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+
+    function buildCard(entry){
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const slots = ["s0","s1","s2","s3"];
+      const masks = ["m60","m60","m40","m40"];
+      const floral = entry.images.map((n,idx)=>
+        `<div class="floral ${slots[idx]} ${masks[idx]}"><img src="assets/botanical_${n}.jpg" alt=""></div>`
+      ).join("");
+
+      const dateline = entry.dateline.replace("{d}", day);
+      const firstPara = `<p><span class="dateline">${escapeHtml(dateline)}</span> ${escapeHtml(entry.firstRest)}</p>`;
+      const rest = entry.paras.map(p=>`<p>${escapeHtml(p)}</p>`).join("");
+
+      card.innerHTML =
+        floral +
+        `<div class="top-glow"></div>` +
+        `<div class="content">` +
+          `<div class="header">` +
+            `<div class="header-glow"></div>` +
+            `<p class="intro">${escapeHtml(entry.intro)}</p>` +
+            `<h1 class="name">${escapeHtml(NAME)}</h1>` +
+          `</div>` +
+          `<div class="body">${firstPara}${rest}</div>` +
+        `</div>`;
+      return card;
+    }
+
+    function render(){
+      const pages = document.getElementById("pages");
+      pages.innerHTML = "";
+      DATA.forEach(e => pages.appendChild(buildCard(e)));
+      document.querySelectorAll("#dateToggle button").forEach(b=>{
+        b.classList.toggle("active", Number(b.dataset.day)===day);
+      });
+    }
+
+    document.querySelectorAll("#dateToggle button").forEach(b=>{
+      b.addEventListener("click",()=>{ day = Number(b.dataset.day); render(); });
+    });
+    document.getElementById("downloadBtn").addEventListener("click",()=>window.print());
+
+    render();
+  </script>
+</body>
+</html>
