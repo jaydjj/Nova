@@ -100,16 +100,40 @@
     /* ---- Print ---- */
     @page{size:Letter;margin:0;}
     @media print{
+      /* Force backgrounds/gradients to print (Safari drops them otherwise). */
+      *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
       body{background:#fff;}
       .pages{padding:0;gap:0;}
       .date-toggle,.download-btn{display:none !important;}
       .card{box-shadow:none;border-radius:0;transform:none;margin-bottom:0;break-after:page;page-break-after:always;}
       .card:last-child{break-after:auto;page-break-after:auto;}
+      /* iOS Safari renders mix-blend-mode and CSS masks as SOLID BLACK in
+         print / "Save as PDF". Drop both, and recreate the soft dissolve with
+         a white radial overlay — a plain background gradient that prints
+         reliably on every browser. The card is white, so fading to #fff is
+         visually identical to the on-screen mask. */
       .floral{mix-blend-mode:normal;}
+      .floral.m60 img,.floral.m40 img{-webkit-mask-image:none !important;mask-image:none !important;}
+      .floral::after{
+        content:"";position:absolute;inset:0;z-index:1;
+        background:radial-gradient(closest-side,transparent 60%,#fff 95%);
+      }
+      .floral.m40::after{
+        background:radial-gradient(closest-side,transparent 40%,#fff 95%);
+      }
     }
 
+    /* On phones the fixed-size Letter card is scaled to fit the viewport.
+       margin-bottom collapses the empty layout box the transform leaves behind
+       (= card height x (1 - scale)) so the cards don't sit far apart. */
     @media screen and (max-width:880px){
-      .card{transform:scale(.62);transform-origin:top center;margin-bottom:-420px;}
+      body{overflow-x:hidden;}
+      .pages{padding:32px 12px 120px;}
+      .card{transform:scale(.62);transform-origin:top center;margin-bottom:calc(-11in * .38);}
+    }
+    @media screen and (max-width:520px){
+      .pages{padding:24px 12px 110px;}
+      .card{transform:scale(.44);margin-bottom:calc(-11in * .56);}
     }
   </style>
 </head>
