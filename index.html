@@ -146,14 +146,14 @@
     <button data-day="28">June 28</button>
   </div>
 
-  <button class="download-btn" id="downloadBtn" title="Print or save as PDF">
+  <a class="download-btn" id="downloadBtn" title="Download the PDF for the selected date" href="nova-robin-june-27.pdf" download>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
       <polyline points="7 10 12 15 17 10"></polyline>
       <line x1="12" y1="15" x2="12" y2="3"></line>
     </svg>
-    Download 3 Images
-  </button>
+    Download PDF
+  </a>
 
   <script>
     const DATA = [
@@ -263,12 +263,17 @@
       document.querySelectorAll("#dateToggle button").forEach(b=>{
         b.classList.toggle("active", Number(b.dataset.day)===day);
       });
+      // Point the download at the pre-rendered PDF for the selected date.
+      // (Browser "print to PDF" is unreliable on iOS Safari — it renders the
+      // floral masks as black — so we ship ready-made PDFs instead.)
+      const dl = document.getElementById("downloadBtn");
+      dl.setAttribute("href", `nova-robin-june-${day}.pdf`);
+      dl.setAttribute("download", `nova-robin-june-${day}.pdf`);
     }
 
     document.querySelectorAll("#dateToggle button").forEach(b=>{
       b.addEventListener("click",()=>{ day = Number(b.dataset.day); render(); });
     });
-    document.getElementById("downloadBtn").addEventListener("click",()=>window.print());
 
     render();
   </script>
